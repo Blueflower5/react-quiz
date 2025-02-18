@@ -31,7 +31,7 @@ export default function App() {
       .then((res) => res.json())
       .then((data) => dispatch({ type: "dataReceived", payload: data }))
       .then((err) => dispatch({ type: "dataFailed" }));
-  });
+  }, []);
   return (
     <div className="app">
       <Header />
