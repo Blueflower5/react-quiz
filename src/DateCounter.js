@@ -1,6 +1,5 @@
 import { useReducer } from "react";
 const initialState = { count: 0, step: 1 };
-
 function reducer(state, action) {
   switch (action.type) {
     case "inc":
@@ -16,7 +15,7 @@ function reducer(state, action) {
     default:
       throw new Error("Unknown action");
   }
-
+  //asghar12:00
   // if (action.type === "inc") return state + 1;
   // if (action.type === "dec") return state - 1;
   // if (action.type === "setCount") return action.payload;
