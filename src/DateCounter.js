@@ -16,6 +16,7 @@ function reducer(state, action) {
       throw new Error("Unknown action");
   }
   //asghar12:00
+  //Jalal 12:02
   // if (action.type === "inc") return state + 1;
   // if (action.type === "dec") return state - 1;
   // if (action.type === "setCount") return action.payload;
