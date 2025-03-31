@@ -10,6 +10,7 @@ import Progress from "./Progress";
 import FinishScreen from "./FinishScreen";
 import Timer from "./Timer";
 import Footer from "./Footer";
+const SEC_PER_QUESTION = 30;
 
 const initialState = {
   questions: [],
@@ -18,7 +19,9 @@ const initialState = {
   answer: null,
   points: 0,
   highscore: 0,
+  timeRemaining: null,
 };
+
 function reducer(state, action) {
   switch (action.type) {
     case "dataReceived":
@@ -36,6 +39,7 @@ function reducer(state, action) {
       return {
         ...state,
         status: "active",
+        timeRemaining: SEC_PER_QUESTION * state.questions.length,
       };
     case "newAnswer":
       const question = state.questions.at(state.index);
@@ -65,15 +69,21 @@ function reducer(state, action) {
         points: 0,
         highscore: 0,
       };
-
+    case "tick":
+      return {
+        ...state,
+        timeRemaining: state.timeRemaining - 1,
+        status: state.timeRemaining < 1 ? "finished" : state.status,
+      };
     default:
       throw new Error("Action unknown");
   }
 }
 export default function App() {
-  const [{ questions, status, index, answer, points, highscore }, dispatch] =
-    useReducer(reducer, initialState);
-
+  const [
+    { questions, status, index, answer, points, highscore, timeRemaining },
+    dispatch,
+  ] = useReducer(reducer, initialState);
   const numQuestions = questions.length;
   const maxPossiblePoints = questions.reduce((pre, cur) => pre + cur.points, 0);
   useEffect(function () {
@@ -106,7 +116,7 @@ export default function App() {
               answer={answer}
             />
             <Footer>
-              <Timer />
+              <Timer dispatch={dispatch} timeRemaining={timeRemaining} />
               <NextQuestion
                 dispatch={dispatch}
                 answer={answer}
